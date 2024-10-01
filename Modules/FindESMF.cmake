@@ -145,3 +145,14 @@ else()
   message(WARNING "ESMFMKFILE ${ESMFMKFILE} not found. Try setting ESMFMKFILE \
                    to esmf.mk location.")
 endif()
+
+# Add target aliases to avoid spurious '-l' flags.
+if(NOT TARGET ESMF::ESMF)
+  add_library(ESMF::ESMF ALIAS esmf)
+endif()
+# The following 'ESMF' target alias can be removed after all UFS component CMake
+# configs transition to using 'ESMF::ESMF'. As it is, it creates backward
+# compatibility with ESMF/MAPL configurations that use the 'ESMF' target.
+if(NOT TARGET ESMF)
+  add_library(ESMF ALIAS esmf)
+endif()
